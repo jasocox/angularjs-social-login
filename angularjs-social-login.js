@@ -140,7 +140,9 @@ socialLogin.directive("linkedIn", function($rootScope, social, socialLoginServic
 						socialLoginService.setProvider("linkedIn");
 						var userDetails = {name: res.firstName + " " + res.lastName, email: res.emailAddress, uid: res.id, provider: "linkedIN", imageUrl: res.pictureUrl};
 						$rootScope.$broadcast('event:social-sign-in-success', userDetails);
-				    });
+				    }).error(function(err) {
+              $rootScope.$broadcast('event:social-sign-in-error', err);
+            });
 				});
 			})
 		}
@@ -162,7 +164,7 @@ socialLogin.directive("gLogin", function($rootScope, social, socialLoginService)
 	        		socialLoginService.setProvider("google");
 	        		$rootScope.$broadcast('event:social-sign-in-success', {token: idToken, name: profile.getName(), email: profile.getEmail(), uid: profile.getId(), provider: "google", imageUrl: profile.getImageUrl()});
 	        	}, function(err){
-	        		console.log(err);
+              $rootScope.$broadcast('event:social-sign-in-error', err);
 	        	})
 	        });
 		}
@@ -183,11 +185,11 @@ socialLogin.directive("fbLogin", function($rootScope, fbService, social, socialL
 							var userDetails = {name: user.name, email: user.email, uid: user.id, provider: "facebook", imageUrl: user.picture.data.url}
 							$rootScope.$broadcast('event:social-sign-in-success', userDetails);
 						}, function(err){
-							console.log(err);
+              $rootScope.$broadcast('event:social-sign-in-error', err);
 						})
 					}
 				}, function(err){
-					console.log(err);
+          $rootScope.$broadcast('event:social-sign-in-error', err);
 				});
 			});
 		}
